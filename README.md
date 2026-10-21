@@ -127,7 +127,7 @@ All options live in one YAML file (`config/config.example.yaml` has a comment on
 | `provider.max_retries` | `3` | Total attempts for transient errors |
 | `provider.anthropic.model` | `claude-sonnet-4-20250514` | **Re-verify against Anthropic docs** |
 | `provider.openai.model` | `gpt-4o` | **Re-verify against OpenAI docs** |
-| `provider.nvidia.model` | `meta/llama-3.2-11b-vision-instruct` | NVIDIA API Catalog (OpenAI-compatible). Alt: `nvidia/nemotron-3.5-super-vl-120b-a12b` (larger MoE, likely slower). **Re-verify against build.nvidia.com** |
+| `provider.nvidia.model` | `nvidia/nemotron-3.5-super-vl-120b-a12b` | NVIDIA API Catalog (OpenAI-compatible). Verified end-to-end (10.52s LLM / 19.21s total). Alt: `meta/llama-3.2-11b-vision-instruct` (also verified working, 11.79s, but showed a cold-start delay on its first invocation). **Re-verify against build.nvidia.com** |
 | `provider.mock.fixed_text` | deterministic sentence | Used by the offline/demo provider |
 | `logo.path` | `assets/logo.png` | PNG with transparency |
 | `logo.on_missing` | `continue_without_logo` | `fail` \| `continue_without_logo` |
@@ -178,9 +178,14 @@ from an environment variable (`ANTHROPIC_API_KEY` / `OPENAI_API_KEY` / `NVIDIA_A
 missing key fails explicitly before any request is sent.
 
 NVIDIA API Catalog (`https://integrate.api.nvidia.com/v1`) is OpenAI-compatible and hosts both
-`meta/llama-3.2-11b-vision-instruct` (dense 11B, default here for predictable low latency) and
-`nvidia/nemotron-3.5-super-vl-120b-a12b` (larger MoE, likely higher latency/quality trade-off) -
-switch via `provider.nvidia.model`.
+`nvidia/nemotron-3.5-super-vl-120b-a12b` (default - verified real end-to-end run: 10.52s LLM /
+19.21s total latency, detailed multi-paragraph description of a real Finviz screenshot) and
+`meta/llama-3.2-11b-vision-instruct` (alternative; also verified working at 11.79s, but its
+first invocation in this session hung for 100s+ before any response - likely a cold start on
+NVIDIA's on-demand infra for a less-frequently-used model; re-verify latency consistency
+before relying on it for a live demo).
+Nemotron requires an `extra_body={"chat_template_kwargs": {"enable_thinking": false}}` field
+(the provider sends this automatically); omitting it causes a fast HTTP 500.
 
 ## Adding a new provider
 
@@ -248,12 +253,14 @@ come only from environment variables and are never logged or written to disk.
 
 ## Sample outputs
 
-From a real Finviz capture (see [`samples/`](samples/) for full files; description is from the
-`mock` provider - no live API key was available in the environment this was built in):
+From a real, fully live Finviz capture (see [`samples/`](samples/) for full files): headed
+Chromium capture + a real NVIDIA Nemotron 3.5 Super VL vision-LLM call. Measured: 8.05s
+capture, 10.52s LLM, 0.15s branding, 19.21s total (see `samples/README.md` for a note on
+occasional numeric hallucination in dense chart text).
 
-![Original Finviz screenshot](samples/capture_20261021_061908.png)
+![Original Finviz screenshot](samples/capture_20261021_074500.png)
 
-![Branded with logo + caption](samples/capture_20261021_061908_branded.png)
+![Branded with logo + caption](samples/capture_20261021_074500_branded.png)
 
 ## Design decisions and trade-offs
 
@@ -293,6 +300,21 @@ From a real Finviz capture (see [`samples/`](samples/) for full files; descripti
   (`tests/test_retry.py`, `tests/test_providers_registry.py`), and `tests/test_live_provider.py`
   contains real end-to-end tests that auto-skip without a key and will run automatically in any
   environment that has one set.
+- **Live NVIDIA calls ARE verified**, through the full CLI pipeline against a real Finviz
+  capture: `nvidia/nemotron-3.5-super-vl-120b-a12b` (default) completed in 10.52s LLM /
+  19.21s total, with a detailed, structurally-accurate multi-paragraph description (see
+  `samples/`). Note the model can hallucinate precise numeric values from small, downscaled
+  chart text - treat generated figures as illustrative, not authoritative. Its alternative,
+  `meta/llama-3.2-11b-vision-instruct`, hung indefinitely (no response after 100s of raw HTTP
+  testing) on its first invocation in this session - likely a cold-start on NVIDIA's on-demand
+  infrastructure for a less-frequently-invoked model - but succeeded in 11.79s on a later,
+  separate run once warmed up. Treat its latency as unpredictable (cold-start risk) compared to
+  Nemotron's consistently fast, warm responses observed here.
+- A real bug was found and fixed during this verification: both the `openai` and `anthropic`
+  SDKs have their own built-in retry logic (default 2-3 extra attempts) that was stacking with
+  this project's own tenacity-based retry layer, turning a 3-attempt policy into up to 9 actual
+  network attempts and a 566-second failure in one observed case. Both SDK clients are now
+  constructed with `max_retries=0` so only the tenacity layer retries.
 - **Window capture backend (`capture.mode: window`) was verified for real** on this Windows
   machine against Notepad (`list-windows` enumerates real windows; a real window capture
   succeeded after the backend raises the target window to the foreground). Multi-monitor DPI

@@ -48,7 +48,7 @@ class AnthropicProvider(Provider):
         self._model = config.anthropic.model
         self._timeout_s = config.timeout_s
         self._max_retries = config.max_retries
-        self._client = anthropic.Anthropic(api_key=api_key, timeout=config.timeout_s)
+        self._client = anthropic.Anthropic(api_key=api_key, timeout=config.timeout_s, max_retries=0)
 
     def describe(self, image_bytes: bytes, media_type: str, prompt: str) -> DescribeResult:
         """See :meth:`scene_agent.providers.base.Provider.describe`."""

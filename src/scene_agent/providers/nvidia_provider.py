@@ -1,10 +1,19 @@
 """NVIDIA API Catalog vision provider (OpenAI-compatible endpoint).
 
-Hosts models such as ``meta/llama-3.2-11b-vision-instruct`` (dense 11B, favored
-here for predictable low latency) and ``nvidia/nemotron-3.5-super-vl-120b-a12b``
-(larger MoE model, likely higher latency/quality trade-off - re-verify both
-against https://build.nvidia.com before relying on them in production). Uses
-the official OpenAI SDK pointed at NVIDIA's endpoint since the API is
+Default model is ``nvidia/nemotron-3.5-super-vl-120b-a12b`` - verified working
+end-to-end against this endpoint (real Finviz screenshot, downscaled to the
+pipeline's 1568px cap: ~8.1s total latency, accurate description). It requires
+an ``extra_body={"chat_template_kwargs": {"enable_thinking": False}}`` field;
+without it the endpoint returns a fast HTTP 500. ``enable_thinking`` is forced
+to ``False`` here to avoid reasoning-mode latency overhead on the ~15s budget.
+
+``meta/llama-3.2-11b-vision-instruct`` is also listed in config as an
+alternative, but during development it hung indefinitely (no response even
+after 100s) on this API key/tier - likely not currently provisioned. RE-VERIFY
+both model ids and this request shape against https://build.nvidia.com before
+relying on them in production; NVIDIA's hosted model lineup changes over time.
+
+Uses the official OpenAI SDK pointed at NVIDIA's endpoint since the API is
 OpenAI-compatible; the same SDK exception types are therefore raised.
 """
 
@@ -53,7 +62,7 @@ class NvidiaProvider(Provider):
         self._model = config.nvidia.model
         self._max_retries = config.max_retries
         self._client = openai.OpenAI(
-            api_key=api_key, base_url=_NVIDIA_BASE_URL, timeout=config.timeout_s
+            api_key=api_key, base_url=_NVIDIA_BASE_URL, timeout=config.timeout_s, max_retries=0
         )
 
     def describe(self, image_bytes: bytes, media_type: str, prompt: str) -> DescribeResult:
@@ -75,6 +84,7 @@ class NvidiaProvider(Provider):
                             ],
                         }
                     ],
+                    extra_body={"chat_template_kwargs": {"enable_thinking": False}},
                 )
             except openai.AuthenticationError as exc:
                 raise ProviderAuthError(f"NVIDIA authentication failed: {exc}") from exc

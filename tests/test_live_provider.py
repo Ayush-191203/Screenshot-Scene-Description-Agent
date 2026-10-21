@@ -13,9 +13,22 @@ import pytest
 from scene_agent.config import ProviderConfig
 from scene_agent.providers.registry import get_provider
 
-_HAS_ANTHROPIC_KEY = bool(os.environ.get("ANTHROPIC_API_KEY"))
-_HAS_OPENAI_KEY = bool(os.environ.get("OPENAI_API_KEY"))
-_HAS_NVIDIA_KEY = bool(os.environ.get("NVIDIA_API_KEY"))
+_PLACEHOLDER_VALUES = {
+    "your-anthropic-api-key-here",
+    "your-openai-api-key-here",
+    "your-nvidia-api-key-here",
+}
+
+
+def _has_real_key(env_var: str) -> bool:
+    """True if ``env_var`` is set to something other than the .env.example placeholder."""
+    value = os.environ.get(env_var)
+    return bool(value) and value not in _PLACEHOLDER_VALUES
+
+
+_HAS_ANTHROPIC_KEY = _has_real_key("ANTHROPIC_API_KEY")
+_HAS_OPENAI_KEY = _has_real_key("OPENAI_API_KEY")
+_HAS_NVIDIA_KEY = _has_real_key("NVIDIA_API_KEY")
 
 
 def _tiny_png_bytes() -> bytes:

@@ -48,7 +48,7 @@ class OpenAIProvider(Provider):
         self._model = config.openai.model
         self._timeout_s = config.timeout_s
         self._max_retries = config.max_retries
-        self._client = openai.OpenAI(api_key=api_key, timeout=config.timeout_s)
+        self._client = openai.OpenAI(api_key=api_key, timeout=config.timeout_s, max_retries=0)
 
     def describe(self, image_bytes: bytes, media_type: str, prompt: str) -> DescribeResult:
         """See :meth:`scene_agent.providers.base.Provider.describe`."""

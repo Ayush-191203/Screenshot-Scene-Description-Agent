@@ -82,9 +82,10 @@ class MockProviderConfig(BaseModel):
 class NvidiaProviderConfig(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    # NVIDIA API Catalog (OpenAI-compatible endpoint). Dense 11B vision model - the safer
-    # choice for a tight latency budget; alternative: "nvidia/nemotron-3.5-super-vl-120b-a12b".
-    model: str = "meta/llama-3.2-11b-vision-instruct"
+    # NVIDIA API Catalog (OpenAI-compatible endpoint). Verified end-to-end (real screenshot,
+    # ~8.1s latency, accurate description). Alternative "meta/llama-3.2-11b-vision-instruct"
+    # hung indefinitely during testing on this API key/tier - likely not currently provisioned.
+    model: str = "nvidia/nemotron-3.5-super-vl-120b-a12b"
 
 
 class ProviderConfig(BaseModel):

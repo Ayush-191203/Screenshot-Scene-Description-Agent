@@ -1,1 +1,0 @@
-This is a deterministic mock description used for offline testing and demos. (image sha256 prefix: c7ceb0a1d6cb)

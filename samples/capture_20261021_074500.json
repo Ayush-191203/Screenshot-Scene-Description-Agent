@@ -1,0 +1,35 @@
+{
+  "run_id": "87554a8c82e6",
+  "status": "success",
+  "timestamp_utc": "2026-10-21T07:45:00.504611+00:00",
+  "source_type": "web",
+  "source_url": "https://www.finviz.com",
+  "paths": {
+    "original_png": "data\\input\\capture_20261021_074500.png",
+    "branded_png": "data\\output\\capture_20261021_074500_branded.png",
+    "txt": "data\\output\\capture_20261021_074500.txt",
+    "json": "data\\output\\capture_20261021_074500.json"
+  },
+  "description": "Based on the image provided, here is a detailed explanation of what is happening in the scene.\n\nThe image is a screenshot of the Finviz financial website, specifically a market overview page. The page provides a comprehensive snapshot of the U.S. stock market's performance on **October 20th, at 8:37 PM**. The overall sentiment is mixed, with the market ending in a state of uncertainty.\n\nHere is a breakdown of the key elements and what they indicate:\n\n### 1. Market Summary\nThe top section provides a high-level summary of the market's close:\n- **S&P 500:** Closed at 4,420.68, up $21.84 (+0.28%). The chart shows a strong rally in the morning, followed by a period of consolidation and slight decline.\n- **NASDAQ:** Closed at 13,650.00, down $6.07 (-0.02%). The chart indicates a volatile day with a sharp rise, followed by a significant drop in the afternoon.\n- **DOW:** Closed at 35,493.50, up $529.85 (+1.02%). The chart shows a strong upward trend throughout the day.\n- **Russell 2000:** Closed at 2,275.73, up $4.50 (+1.66%). The chart shows a steady increase in the small-cap index.\n\nThe summary text notes that \"US stocks ended mixed with small caps and defensives leading as healthcare and real estate outperformed while oil edged higher and pending home sales slumped.\"\n\n### 2. Market Breadth and Sentiment\nThis section analyzes the overall market health:\n- **Advancing:** 65.3% (3,664 stocks)\n- **Declining:** 34.7% (1,680.30%)\n- **New High:** 24.2% (112 stocks)\n- **New Low:** 35.51% (351,78.9%)\n- **Above 50SMA:** 30.1% (11,664 stocks)\n- **Below 50SMA:** 69.9% (3910.6%)\n- **Above SMA200:** 38.2% (2,136 stocks)\n- **Below SMA200:** 61.8% (3,481.6%)\n- **Bull:** 54%\n- **Bear:** 46%\n\nThis data shows a mixed picture. While more stocks advanced than declined, a significant portion of stocks are trading below their 50-day moving average, indicating short-term weakness. However, the number of new highs is relatively high compared to new lows, suggesting some underlying strength.\n\n### 3. Top Gainers and Losers\nThis section lists the most active stocks with the highest percentage gains and losses:\n- **Top Gainers:** SAIO (+100.59%), PRSO (+54.13%), ATGL (+52.64%), BRZE (+51.70%).\n- **Top Losers:** CJMB (-65.63%), PMJ (-32.17%), RAIL (-31.37%), GMEX (-28.77%).\n\n### 4. Sector Performance (S&P 500 - 1-Day Performance)\nThis is a heatmap (a treemap) showing the performance of different sectors within the S&P 500.\n- **Red squares** represent sectors that declined.\n- **Green squares** represent sectors that advanced.\n- **Notable Performers:**\n  - **Top Performers:** Technology (MU, AMD), Consumer Cyclical (AAPL, AMZN, TJX), Healthcare (TSLA).\n  - **Top Decliners:** Technology (GOOGL, META), Communication Services (VZ, WMT), Consumer Defensive (KO).\n  - The heatmap visually confirms that **Healthcare** and **Real Estate** were strong performers, while **Energy** and **Utilities** were among the weakest.\n\n### 5. Trading Signals\nThis section lists stocks that have triggered specific technical signals:\n- **Trendline Supp.:** Stocks like WSF, YBB.\n- **Trendline Resist.:** Stocks like JKWS, WYV.\n- **Horizontal S/R:** Stocks like ENSC, SPCE.\n- **Wedges Up/Down:** Stocks like WCC, WSCC.\n\n### 6. Major News\nThis section provides headlines related to the market:\n- **SPCX:** -0.11%\n- **TSLA:** -1.54%\n-",
+  "prompt_sha256": "3bd56742690d6f66d0403a57ac7a52357346ded696175726c762564b57d6e080",
+  "provider": "nvidia",
+  "model": "nvidia/nemotron-3.5-super-vl-120b-a12b",
+  "usage": {
+    "input_tokens": 1403,
+    "output_tokens": 1024
+  },
+  "image_dimensions": {
+    "width": 1920,
+    "height": 1080
+  },
+  "original_sha256": "f30feb9f83ff9671805248fc4232350eee6bb25d08aad4008287901d2a99e7b2",
+  "durations_ms": {
+    "capture": 8051.84,
+    "llm": 10516.73,
+    "branding": 148.49,
+    "total": 19206.08
+  },
+  "retry_count": 0,
+  "error_code": null,
+  "error_message": null
+}

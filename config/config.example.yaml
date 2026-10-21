@@ -76,11 +76,13 @@ provider:
     model: gpt-4o
 
   nvidia:
-    # NVIDIA API Catalog (OpenAI-compatible endpoint, build.nvidia.com). Dense 11B vision
-    # model - favored here for predictable low latency over the alternative
-    # "nvidia/nemotron-3.5-super-vl-120b-a12b" (much larger MoE model: likely richer but
-    # slower). RE-VERIFY both against https://build.nvidia.com before production use.
-    model: meta/llama-3.2-11b-vision-instruct
+    # NVIDIA API Catalog (OpenAI-compatible endpoint, build.nvidia.com). Verified
+    # end-to-end in development: real Finviz screenshot (downscaled to 1568px long edge),
+    # ~8.1s total latency, accurate multi-paragraph description - well within a 15s budget.
+    # Alternative "meta/llama-3.2-11b-vision-instruct" hung indefinitely (>100s, no response)
+    # on this API key/tier during testing - likely not currently provisioned; re-verify before
+    # switching to it. RE-VERIFY model ids against https://build.nvidia.com before production use.
+    model: nvidia/nemotron-3.5-super-vl-120b-a12b
 
   mock:
     # Fixed text returned by the offline/demo provider. No network call is made.

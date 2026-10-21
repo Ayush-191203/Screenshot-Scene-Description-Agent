@@ -25,7 +25,7 @@ logger = logging.getLogger("scene_agent.cli")
 
 def _add_common_overrides(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--config", default="config/config.yaml", help="Path to config YAML file.")
-    parser.add_argument("--provider", choices=["anthropic", "openai", "mock"], default=None)
+    parser.add_argument("--provider", choices=["anthropic", "openai", "nvidia", "mock"], default=None)
     parser.add_argument("--input-dir", default=None, help="Override paths.input_dir.")
     parser.add_argument("--output-dir", default=None, help="Override paths.output_dir.")
     parser.add_argument("--url", default=None, help="Override capture.web.url.")
