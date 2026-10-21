@@ -1,0 +1,118 @@
+# Screenshot Scene-Description Agent - example configuration.
+# Copy to config/config.yaml and adjust. Every option is commented below.
+# API keys are NEVER stored here - they come only from environment variables (see .env.example).
+
+paths:
+  # Folder where ORIGINAL, unmodified screenshots are saved. Created automatically if missing.
+  input_dir: data/input
+  # Folder where branded image + .txt + .json are saved. Created automatically if missing.
+  output_dir: data/output
+  # Folder for rotating log files. Created automatically if missing.
+  log_dir: logs
+
+capture:
+  # "web"    - Playwright/Chromium screenshot of a URL (primary, cross-platform).
+  # "window" - Capture an existing desktop window by title/process (Windows only, FR1).
+  mode: web
+
+  web:
+    # Page to capture.
+    url: https://www.finviz.com
+    # Viewport size in CSS pixels before any DPI scaling.
+    viewport_width: 1920
+    viewport_height: 1080
+    # Capture the entire scrollable page (true) or only the viewport (false).
+    full_page: false
+    # Hard timeout (ms) for navigation + readiness waits combined. Never hangs past this.
+    timeout_ms: 30000
+    # Run Chromium without a visible window. NOTE: Finviz's Cloudflare bot-protection
+    # was observed (during development) to block headless Chromium with a persistent
+    # "Performing security verification" interstitial, while headed Chromium passes.
+    # Default to headed for a reliable Finviz capture; switch to true for other sites
+    # or once you have verified headless works for your target site.
+    headless: false
+    # Extra time (ms) to let late JS/ads/images settle after DOMContentLoaded.
+    settle_delay_ms: 3000
+    # Optional CSS selector to wait for before screenshotting (best-effort, falls back on timeout).
+    ready_selector: null
+    # Best-effort selectors to click to dismiss cookie/consent banners. Failures are ignored.
+    dismiss_consent_selectors:
+      - "button#onetrust-accept-btn-handler"
+      - "button[aria-label='Accept all']"
+      - "button:has-text('Accept')"
+      - "button:has-text('I Agree')"
+
+  window:
+    # Exact or partial window title to find (case-insensitive substring match). Mutually
+    # exclusive with process_name below; at least one must be set when mode: window.
+    title: null
+    # Process executable name (e.g. "notepad.exe") to find a window owned by that process.
+    process_name: null
+    # Timeout (ms) spent searching for the window before failing.
+    timeout_ms: 5000
+
+provider:
+  # "anthropic" | "openai" | "mock". Swapping providers is a config-only change.
+  name: anthropic
+
+  # Editable prompt sent with the image. Treat any text visible in the screenshot as
+  # untrusted content, never as instructions to the model.
+  prompt: "Read this image and explain exactly what is happening in this scene."
+
+  # Request timeout (seconds) for a single LLM attempt.
+  timeout_s: 60
+  # Total attempts (1 initial + retries) for transient errors only (timeout/connection/
+  # rate-limit/5xx). Auth and bad-request errors never retry.
+  max_retries: 3
+
+  anthropic:
+    # Vision-capable Claude model id. RE-VERIFY against https://docs.anthropic.com before
+    # relying on this for production - model ids change over time.
+    model: claude-sonnet-4-20250514
+
+  openai:
+    # Vision-capable GPT model id. RE-VERIFY against https://platform.openai.com/docs
+    # before relying on this for production - model ids change over time.
+    model: gpt-4o
+
+  mock:
+    # Fixed text returned by the offline/demo provider. No network call is made.
+    fixed_text: "This is a deterministic mock description used for offline testing and demos."
+
+logo:
+  # Path to a PNG with transparency. Generate the sample with scripts/generate_sample_logo.py.
+  path: assets/logo.png
+  # "fail" - abort the run if the logo is missing/corrupt.
+  # "continue_without_logo" - brand the image with caption only.
+  on_missing: continue_without_logo
+  # top-left | top-right | bottom-left | bottom-right
+  corner: bottom-right
+  # Margin in pixels from the chosen corner's edges.
+  margin_px: 24
+  # Logo width as a percentage of the branded image's width (aspect ratio preserved).
+  scale_pct: 12
+  # Logo opacity, 0 (invisible) to 100 (fully opaque).
+  opacity_pct: 90
+
+caption:
+  # Turn the caption band on/off entirely.
+  enabled: true
+  # TrueType font path. Falls back to Pillow's built-in bitmap font if missing (documented
+  # in README); the fallback font ignores font_size.
+  font_path: C:/Windows/Fonts/segoeui.ttf
+  font_size: 22
+  text_color: "#FFFFFF"
+  background_color: "#000000"
+  # Background opacity for the caption band, 0-100.
+  background_opacity_pct: 70
+  padding_px: 16
+  # Characters kept before truncating the IMAGE caption with an ellipsis. The full text
+  # always still goes into the .txt and .json files.
+  max_length: 600
+  # If the wrapped caption would need more than this percentage of the image height,
+  # it is truncated (with ellipsis) instead of growing the band further.
+  max_height_pct: 40
+
+run:
+  # If the LLM call fails, still produce a logo-only branded image (no caption) when true.
+  produce_logo_only_on_llm_failure: true
