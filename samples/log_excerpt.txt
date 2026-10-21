@@ -1,0 +1,20 @@
+﻿2026-10-21 11:44:39,894 INFO     run_id=7c1855e43de6 scene_agent: Saved original screenshot to data\input\capture_20261021_061430.png
+2026-10-21 11:44:40,023 INFO     run_id=7c1855e43de6 scene_agent: LLM description succeeded (provider=mock model=mock-v1 retries=0)
+2026-10-21 11:44:40,151 INFO     run_id=7c1855e43de6 scene_agent: Saved branded image to data\output\capture_20261021_061430_branded.png
+2026-10-21 11:44:40,151 INFO     run_id=7c1855e43de6 scene_agent: Run finished with status=success in 9881.5ms
+2026-10-21 11:45:05,290 INFO     run_id=21f7f1d73582 scene_agent: Saved original screenshot to data\input\capture_20261021_061500.png
+2026-10-21 11:45:05,380 INFO     run_id=21f7f1d73582 scene_agent: LLM description succeeded (provider=mock model=mock-v1 retries=0)
+2026-10-21 11:45:05,469 INFO     run_id=21f7f1d73582 scene_agent: Saved branded image to data\output2\capture_20261021_061500_branded.png
+2026-10-21 11:45:05,476 INFO     run_id=21f7f1d73582 scene_agent: Run finished with status=success in 4799.1ms
+2026-10-21 11:46:24,308 INFO     run_id=e3c6a279b39b scene_agent: Saved original screenshot to data\input\capture_20261021_061613.png
+2026-10-21 11:46:24,361 INFO     run_id=e3c6a279b39b scene_agent: LLM description succeeded (provider=mock model=mock-v1 retries=0)
+2026-10-21 11:46:24,420 INFO     run_id=e3c6a279b39b scene_agent: Saved branded image to data\output3\capture_20261021_061613_branded.png
+2026-10-21 11:46:24,423 INFO     run_id=e3c6a279b39b scene_agent: Run finished with status=success in 11257.6ms
+2026-10-21 11:47:18,348 INFO     run_id=09f04839d176 scene_agent: Saved original screenshot to data\input\capture_20261021_061656.png
+2026-10-21 11:47:18,463 INFO     run_id=09f04839d176 scene_agent: LLM description succeeded (provider=mock model=mock-v1 retries=0)
+2026-10-21 11:47:18,583 INFO     run_id=09f04839d176 scene_agent: Saved branded image to data\output4\capture_20261021_061656_branded.png
+2026-10-21 11:47:18,583 INFO     run_id=09f04839d176 scene_agent: Run finished with status=success in 22000.8ms
+2026-10-21 11:49:20,430 INFO     run_id=e72688812d9d scene_agent: Saved original screenshot to data\input\capture_20261021_061908.png
+2026-10-21 11:49:20,769 INFO     run_id=e72688812d9d scene_agent: LLM description succeeded (provider=mock model=mock-v1 retries=0)
+2026-10-21 11:49:21,200 INFO     run_id=e72688812d9d scene_agent: Saved branded image to data\output\capture_20261021_061908_branded.png
+2026-10-21 11:49:21,216 INFO     run_id=e72688812d9d scene_agent: Run finished with status=success in 12252.4ms

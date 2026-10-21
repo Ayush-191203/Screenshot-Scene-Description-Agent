@@ -1,0 +1,35 @@
+{
+  "run_id": "e72688812d9d",
+  "status": "success",
+  "timestamp_utc": "2026-10-21T06:19:08.953022+00:00",
+  "source_type": "web",
+  "source_url": "https://www.finviz.com",
+  "paths": {
+    "original_png": "data\\input\\capture_20261021_061908.png",
+    "branded_png": "data\\output\\capture_20261021_061908_branded.png",
+    "txt": "data\\output\\capture_20261021_061908.txt",
+    "json": "data\\output\\capture_20261021_061908.json"
+  },
+  "description": "This is a deterministic mock description used for offline testing and demos. (image sha256 prefix: c7ceb0a1d6cb)",
+  "prompt_sha256": "3bd56742690d6f66d0403a57ac7a52357346ded696175726c762564b57d6e080",
+  "provider": "mock",
+  "model": "mock-v1",
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "image_dimensions": {
+    "width": 1920,
+    "height": 1080
+  },
+  "original_sha256": "ae1d0d3a77e5248830616b52547b4e36cdcc441133ca4dcb4e4b53c31c29a02e",
+  "durations_ms": {
+    "capture": 11382.07,
+    "llm": 1.21,
+    "branding": 432.06,
+    "total": 12252.36
+  },
+  "retry_count": 0,
+  "error_code": null,
+  "error_message": null
+}
