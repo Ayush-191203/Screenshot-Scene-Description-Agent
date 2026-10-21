@@ -1,0 +1,33 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+dist/
+build/
+
+# Secrets
+.env
+*.env.local
+
+# Local working config (keep only config.example.yaml in VCS)
+config/config.yaml
+
+# App runtime data (configurable paths, not for VCS)
+data/input/
+data/output/
+logs/*.log*
+!logs/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/*
+!.vscode/settings.json
