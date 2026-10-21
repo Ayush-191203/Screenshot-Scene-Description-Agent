@@ -121,12 +121,13 @@ All options live in one YAML file (`config/config.example.yaml` has a comment on
 | `capture.web.dismiss_consent_selectors` | common cookie-banner selectors | Best-effort click list |
 | `capture.window.title` / `process_name` | `null` | Match an existing window (one required if `mode: window`) |
 | `capture.window.timeout_ms` | `5000` | How long to search for the window |
-| `provider.name` | `anthropic` | `anthropic` \| `openai` \| `mock` |
+| `provider.name` | `anthropic` | `anthropic` \| `openai` \| `nvidia` \| `mock` |
 | `provider.prompt` | "Read this image and explain exactly what is happening in this scene." | Editable prompt |
 | `provider.timeout_s` | `60` | Per-attempt request timeout |
 | `provider.max_retries` | `3` | Total attempts for transient errors |
 | `provider.anthropic.model` | `claude-sonnet-4-20250514` | **Re-verify against Anthropic docs** |
 | `provider.openai.model` | `gpt-4o` | **Re-verify against OpenAI docs** |
+| `provider.nvidia.model` | `meta/llama-3.2-11b-vision-instruct` | NVIDIA API Catalog (OpenAI-compatible). Alt: `nvidia/nemotron-3.5-super-vl-120b-a12b` (larger MoE, likely slower). **Re-verify against build.nvidia.com** |
 | `provider.mock.fixed_text` | deterministic sentence | Used by the offline/demo provider |
 | `logo.path` | `assets/logo.png` | PNG with transparency |
 | `logo.on_missing` | `continue_without_logo` | `fail` \| `continue_without_logo` |
@@ -169,12 +170,17 @@ Config-only change, no code edits:
 
 ```yaml
 provider:
-  name: openai   # was: anthropic
+  name: nvidia   # was: anthropic | openai | mock
 ```
 
-or per-run override: `scene-agent run --provider openai`. The provider reads its API key only
-from `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` environment variables; a missing key fails
-explicitly before any request is sent.
+or per-run override: `scene-agent run --provider nvidia`. Each provider reads its API key only
+from an environment variable (`ANTHROPIC_API_KEY` / `OPENAI_API_KEY` / `NVIDIA_API_KEY`); a
+missing key fails explicitly before any request is sent.
+
+NVIDIA API Catalog (`https://integrate.api.nvidia.com/v1`) is OpenAI-compatible and hosts both
+`meta/llama-3.2-11b-vision-instruct` (dense 11B, default here for predictable low latency) and
+`nvidia/nemotron-3.5-super-vl-120b-a12b` (larger MoE, likely higher latency/quality trade-off) -
+switch via `provider.nvidia.model`.
 
 ## Adding a new provider
 

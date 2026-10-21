@@ -13,12 +13,14 @@ from scene_agent.errors import ConfigError
 from scene_agent.providers.anthropic_provider import AnthropicProvider
 from scene_agent.providers.base import Provider
 from scene_agent.providers.mock_provider import MockProvider
+from scene_agent.providers.nvidia_provider import NvidiaProvider
 from scene_agent.providers.openai_provider import OpenAIProvider
 
 _REGISTRY: dict[str, Callable[[ProviderConfig], Provider]] = {
     "anthropic": AnthropicProvider,
     "openai": OpenAIProvider,
     "mock": MockProvider,
+    "nvidia": NvidiaProvider,
 }
 
 

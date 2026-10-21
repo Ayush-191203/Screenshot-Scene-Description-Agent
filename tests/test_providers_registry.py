@@ -39,6 +39,20 @@ def test_openai_provider_requires_api_key(monkeypatch: pytest.MonkeyPatch) -> No
         get_provider(config)
 
 
+def test_nvidia_provider_requires_api_key(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.delenv("NVIDIA_API_KEY", raising=False)
+    config = ProviderConfig(name="nvidia")
+    with pytest.raises(ProviderAuthError):
+        get_provider(config)
+
+
+def test_nvidia_provider_constructs_with_api_key(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("NVIDIA_API_KEY", "test-key")
+    config = ProviderConfig(name="nvidia")
+    provider = get_provider(config)
+    assert provider.name == "nvidia"
+
+
 def test_mock_provider_describe_is_deterministic() -> None:
     config = ProviderConfig(name="mock")
     provider = get_provider(config)

@@ -52,7 +52,7 @@ capture:
     timeout_ms: 5000
 
 provider:
-  # "anthropic" | "openai" | "mock". Swapping providers is a config-only change.
+  # "anthropic" | "openai" | "nvidia" | "mock". Swapping providers is a config-only change.
   name: anthropic
 
   # Editable prompt sent with the image. Treat any text visible in the screenshot as
@@ -74,6 +74,13 @@ provider:
     # Vision-capable GPT model id. RE-VERIFY against https://platform.openai.com/docs
     # before relying on this for production - model ids change over time.
     model: gpt-4o
+
+  nvidia:
+    # NVIDIA API Catalog (OpenAI-compatible endpoint, build.nvidia.com). Dense 11B vision
+    # model - favored here for predictable low latency over the alternative
+    # "nvidia/nemotron-3.5-super-vl-120b-a12b" (much larger MoE model: likely richer but
+    # slower). RE-VERIFY both against https://build.nvidia.com before production use.
+    model: meta/llama-3.2-11b-vision-instruct
 
   mock:
     # Fixed text returned by the offline/demo provider. No network call is made.

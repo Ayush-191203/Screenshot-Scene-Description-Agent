@@ -15,6 +15,7 @@ from scene_agent.providers.registry import get_provider
 
 _HAS_ANTHROPIC_KEY = bool(os.environ.get("ANTHROPIC_API_KEY"))
 _HAS_OPENAI_KEY = bool(os.environ.get("OPENAI_API_KEY"))
+_HAS_NVIDIA_KEY = bool(os.environ.get("NVIDIA_API_KEY"))
 
 
 def _tiny_png_bytes() -> bytes:
@@ -44,3 +45,12 @@ def test_live_openai_describe() -> None:
     result = provider.describe(_tiny_png_bytes(), "image/png", "Describe this test image briefly.")
     assert result.text
     assert result.provider == "openai"
+
+
+@pytest.mark.skipif(not _HAS_NVIDIA_KEY, reason="NVIDIA_API_KEY not set")
+def test_live_nvidia_describe() -> None:
+    config = ProviderConfig(name="nvidia")
+    provider = get_provider(config)
+    result = provider.describe(_tiny_png_bytes(), "image/png", "Describe this test image briefly.")
+    assert result.text
+    assert result.provider == "nvidia"

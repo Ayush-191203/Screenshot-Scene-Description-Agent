@@ -79,18 +79,27 @@ class MockProviderConfig(BaseModel):
     fixed_text: str = "This is a deterministic mock description used for offline testing."
 
 
+class NvidiaProviderConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    # NVIDIA API Catalog (OpenAI-compatible endpoint). Dense 11B vision model - the safer
+    # choice for a tight latency budget; alternative: "nvidia/nemotron-3.5-super-vl-120b-a12b".
+    model: str = "meta/llama-3.2-11b-vision-instruct"
+
+
 class ProviderConfig(BaseModel):
     """Vision-LLM provider selection and shared request settings."""
 
     model_config = ConfigDict(extra="forbid")
 
-    name: Literal["anthropic", "openai", "mock"] = "mock"
+    name: Literal["anthropic", "openai", "mock", "nvidia"] = "mock"
     prompt: str = "Read this image and explain exactly what is happening in this scene."
     timeout_s: int = Field(60, gt=0)
     max_retries: int = Field(3, ge=1, le=10)
     anthropic: AnthropicProviderConfig = Field(default_factory=AnthropicProviderConfig)
     openai: OpenAIProviderConfig = Field(default_factory=OpenAIProviderConfig)
     mock: MockProviderConfig = Field(default_factory=MockProviderConfig)
+    nvidia: NvidiaProviderConfig = Field(default_factory=NvidiaProviderConfig)
 
 
 class LogoConfig(BaseModel):
